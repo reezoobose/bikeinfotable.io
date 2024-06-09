@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<div id = header><title>MotoGP Interpolate Path</title> </div>
+<style>
+#header {
+    background-color:white;
+    color:black;
+    text-align:center;
+    padding:1px;
+}
+#splinesDiv {
+	border: 1px solid black; 
+	cursor:default;
+    height:800px;
+    width:1600px;
+    float:right;
+}
+#nav {
+	line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
+}
+#section {
+    width:200px;
+    float:left;
+    padding:10px; 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+}
+</style>
+	<title>MotoGP Interpolate Path</title>
+    <script src="TrackSplinePaths.js"></script>
+    <script src="MotoGPInterpolatePath.js"></script>
+    <script src="CatmullRom.js"></script>
+    <script src="Blob.js"></script>
+    <script src="FileSaver.js"></script>
+</head>
+
+<body onload="init()">
+	<div id = header><h2>MotoGP Interpolate Path</h2></div>
+
+    <div id="splinesDiv">
+    <!--<div id="splinesDiv" style="position:absolute border: 1px solid black; top:5%; left:5%; cursor:default;">-->
+        <canvas id="splinesCanvas" width="1600" height="800">
+        Your browser does not support the canvas element.
+        </canvas>
+    </div>
+	<div id="section">
+		<div id="input_div">
+			<h3>Input:</h3>
+			<label>  [trackname]_heightsEdited.csv file from MotoGP Edit Heights</label> <input type="file" id="fileInputCsv"/><br />
+			<br />or:<br /><br />
+			<label>  Paste .csv data below then click </label><input id="ta_submit_button" type="submit" value="Submit" onclick="getCSVFromTextArea()"/><br />
+			<textarea name="ta_csvinput" id="ta_csvinput" cols="40" rows="8" style="visibility:visible;"></textarea>
+		</div>
+		<div id = "info" style="visibility:hidden">
+			<br>Index:<input type="text" style="width: 80px" id="index" value="" readonly><br /> 
+			<br>X Pos:<input type="text" style="width: 80px" id="xpos" value="" readonly><br /> 
+			<br>Z Pos:<input type="text" style="width: 80px" id="ypos" value="" readonly><br /> 
+			<br>Altitude:<input type="text" style="width: 80px" id="altitude" value="" readonly><br /> 
+			<br>Progress:<input type="text" style="width: 80px" id="progress" value="" readonly><br /> 
+		</div>
+		<div id="output_div" style="visibility:hidden">
+			<h3>
+			Output:
+			</h3>
+			<div id="objFilename_div" style="visibility:hidden">
+				<label>  .obj OutFilename: <input type="text" style="width: 100px"class="filename" id="out-obj-filename" placeholder="" />_interpolatedPath.obj</label>
+				<input type="submit" value="Save" onclick="saveObjFile()"/><br />
+			</div>
+			<textarea name="ta_objoutput" id="ta_objoutput" cols="40" rows="8" readonly></textarea><br /><br />
+		</div>
+		<div id="description">
+			<h2>Description</h2>
+			<p>Use this tool to interpolate the track path:</p>
+
+			<h2>How To Use</h2>
+			<ul>
+			<li>first click out a kml file in MotoGP Track Tracer</li>
+			<li>the use MotoGP Edit Heights to adjust the height profile of the data</li>
+			<li>then use this tool to automatically interpolate extra points in the renderable geometry</li>
+			<li>export the new .obj file, it will be written to your downlaods folder</li>
+			<li>load this file into max and export for unity</li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

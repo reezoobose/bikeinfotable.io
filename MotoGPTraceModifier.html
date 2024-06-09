@@ -1,0 +1,93 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+	<meta http-equiv=content-type content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<style>
+#header {
+    background-color:white;
+    color:black;
+    text-align:center;
+    padding:1px;
+}
+#canvasDiv {
+	border: 1px solid black; 
+	cursor:default;
+    height:800px;
+    width:1600px;
+}
+#nav {
+	line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
+}
+#section {
+    width:600px;
+    float:left;
+    padding:10px; 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+}
+</style>
+	<title>MotoGP Track Trace Modifier</title>
+	<script src="traceModifier.js" language="javascript"></script>
+	<script src="CatmullRom.js" language="javascript"></script>
+    <script type="application/ecmascript" async="" src="Blob.js"></script>
+    <script type="application/ecmascript" async="" src="FileSaver.js"></script>
+</head>
+<body onload="init()">
+	<div align="center">
+		<div id = header><h2>MotoGP Trace Modifier</h2></div>
+
+		<div id="map_canvas" style="height: 800px;width: 1600px"></div>
+		
+		<div id="info">
+			<p>Search For Location : <input name="goto" id="goto" type="text" size="25" maxlength="50" onKeyPress="return submitenter(this,event);" onClick="this.select();"/> <input class="custombutton" id="btn_go" name="btn_go" type="button" value="Search" onclick="javascript:ftn_quickfind2(document.getElementById('goto').value)"/></p>
+		</div>
+		
+		<div id="outputDiv">
+			<p>[Map Height : <a href="javascript:void(0)" onClick="javascript:document.getElementById('map_canvas').style.height='400px';google.maps.event.trigger(map, 'resize');">Small</a> -
+			<a href="javascript:void(0)" onClick="javascript:document.getElementById('map_canvas').style.height='600px';google.maps.event.trigger(map, 'resize');">Medium</a> -
+			<a href="javascript:void(0)" onClick="javascript:document.getElementById('map_canvas').style.height='800px';google.maps.event.trigger(map, 'resize');">Large</a>]</p>
+			<div id="input_div">
+				<h3>Input:</h3>
+				<label>  edited id,lat,long,alt csv :</label> <input type="file" id="fileInputCsv"/><br />
+			</div>
+			<div id="output_div">
+				<h3>
+				Output:
+				</h3>
+				<div id="csvFilename_div" style="visibility:hidden">
+					<label>  .csv OutFilename: <input type="text" style="width: 100px"class="filename" id="out-csv-filename" placeholder="" />_FromKml.csv</label>
+					<input type="submit" value="Save" onclick="saveCsvFile()"/><br />
+					<textarea name="ta_csvoutput" id="ta_csvoutput" cols="100" rows="8" readonly></textarea><br /><br />
+				</div>
+				
+				<div id="kmlFilename_div" style="visibility:hidden">
+					<label>  .kml OutFilename: <input type="text" style="width: 100px"class="filename" id="out-kml-filename" placeholder="" />.kml</label>
+					<input type="submit" value="Save" onclick="saveKmlFile()"/><br />
+					<textarea name="ta_kmloutput" id="ta_kmloutput" cols="100" rows="8" readonly></textarea><br /><br />
+				</div>
+				
+				<div id="objFilename_div" style="visibility:hidden">
+					<label>  .obj OutFilename: <input type="text" style="width: 100px"class="filename" id="out-obj-filename" placeholder="" />_FromKml.obj</label>
+					<input type="submit" value="Save" onclick="saveObjFile()"/><br />
+					<textarea name="ta_objoutput" id="ta_objoutput" cols="100" rows="8" readonly></textarea><br /><br />
+				</div>
+			</div>
+		</div><br />
+	</div>
+	<h2>Description</h2>
+	<p>edit a csv splice trace and use this tool to reprocess it</p>
+</body>
+</html>
