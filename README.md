@@ -1,22 +1,9 @@
-# README #
+# README
+The documentation was created in Joplin but exported as html.
 
-This Repo contains Web based javascript tools used in the development of MotoGP Championship Quest.
+First Move everything to C:\MotoGP\TechnicalDocumentation\MotoGP\Documentation so the links in this documentation work.
 
-## Tools For Track Creation
-- MotoGPTrace_v3.html
-- MotoGPTraceModifier.html
-- MotoGPReducePoints.html
-- MotoGPInterpolatePath.html
-- MotoGPSplineEditor.html
-- MotoGPEditHeights.html
+Then start here: 
 
-## Tools for Client Update
-- MotoGPUpdateBikeTable.html
-- MotoGPSplitTranslationFiles.html
-
-## Tools used very early on in development
-- AnmText.html
-- AnmShift.html
-- MixToCsv.html
-- MotoGPResultsViewer.html
-
+[Joplin link: MotoGP Championship Quest Documentation](:/5d038ac3f07e4e92958c7110f3bd7e04)
+[or HTML link  : MotoGP Championship Quest Documentation](file:///C:/MotoGP/TechnicalDocumentation/MotoGP/Documentation/MotoGPChampionshipQuestDocumentation.html)
