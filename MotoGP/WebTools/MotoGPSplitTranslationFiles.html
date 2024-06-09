@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<div id = header><title>MotoGP Make Translation Files</title> </div>
+<style>
+#header {
+    background-color:white;
+    color:black;
+    text-align:center;
+    padding:1px;
+}
+#nav {
+	line-height:30px;
+    background-color:#eeeeee;
+    height:300px;
+    width:100px;
+    float:left;
+    padding:5px; 
+}
+#section {
+    width:800px;
+    float:left;
+    padding:10px; 
+}
+#info {
+    width:400px;
+    float:left;
+    padding:10px; 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+}
+	<title>Make Translation Files</title>
+</style>
+    <script src="MotoGPSplitTranslate.js"></script>
+    <script src="Blob.js"></script>
+    <script src="FileSaver.js"></script>
+</head>
+
+<body onload="init()">
+	<div id = header><h2>Make Translation Files</h2></div>
+
+<div id="section">
+	<h3>Input:</h3>
+	<label>  .tsv file (from step 3 below):</label> <input type="file" id="fileInputTxt"/><br />
+<p>Translations are all stored in the "MotoGPMasterStringTable" on Google Docs</p>
+<p>To create the latest version of strings to go into the game. <span style="text-decoration: underline;"><em>Complete all these steps every time.</em></span></p>
+<ol>
+<li>delete all translationlist*.txt from your downloads folder</li>
+<li>open the google doc:(<strong><a href="https://docs.google.com/spreadsheets/d/1a4nYVyveLPzJyrd0QY0sEWg9SJrIm7OoayvT7fcZnEk/edit?ts=56e36b3a#gid=110194774" target="_blank">click here</a> </strong>to open it),</li>
+<li>in google docs select File>>Download as>>Tab-separated values (.tsv, current sheet)</li>
+<li>in this tool [Choose File] and select the .tsv file from your downloads folder</li>
+<li>this tool will save the following files to your downloads folder
+<ul>
+<li>translationlist*.txt</li>
+</ul>
+</li>
+<li>include all these files in the Unity project for MotoGP in Assets/Resources</li>
+</ol>
+</div>
+</body>
+</html>

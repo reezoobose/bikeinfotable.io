@@ -1,0 +1,1244 @@
+
+				<!DOCTYPE html>
+				<html>
+					<head>
+						<meta charset="UTF-8">
+						<meta name="viewport" content="width=device-width, initial-scale=1" />
+						<link rel="stylesheet" href="pluginAssets/katex/katex.css"><script type="application/javascript" src="pluginAssets/mermaid/mermaid.min.js"></script><script type="application/javascript" src="pluginAssets/mermaid/mermaid_render.js"></script><link rel="stylesheet" href="pluginAssets/highlight.js/atom-one-light.css">
+						<title>UsefulSQLcommands</title>
+					</head>
+					<body>
+						<div class="exported-note"><div class="exported-note-title">UsefulSQLcommands</div>
+
+<style>
+		/* https://necolas.github.io/normalize.css/ */
+		html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}
+		article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}
+		pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects}
+		b,strong{font-weight:bolder}small{font-size:80%}img{border-style:none}
+
+		body {
+			font-size: 15px;
+			color: #32373F;
+			word-wrap: break-word;
+			line-height: 1.6em;
+			background-color: #ffffff;
+			font-family: 'Avenir', 'Arial', sans-serif;
+			padding-bottom: 0px;
+			padding-top: 0px;
+		}
+		kbd {
+			border: 1px solid rgb(220, 220, 220);
+			box-shadow: inset 0 -1px 0 rgb(220, 220, 220);
+			padding: 2px 4px;
+			border-radius: 3px;
+			background-color: rgb(243, 243, 243);
+		}
+		::-webkit-scrollbar {
+			width: 7px;
+			height: 7px;
+		}
+		::-webkit-scrollbar-corner {
+			background: none;
+		}
+		::-webkit-scrollbar-track {
+			border: none;
+		}
+		::-webkit-scrollbar-thumb {
+			background: rgba(100, 100, 100, 0.3); 
+			border-radius: 5px;
+		}
+		::-webkit-scrollbar-track:hover {
+			background: rgba(0, 0, 0, 0.1); 
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: rgba(100, 100, 100, 0.7); 
+		}
+
+		
+
+		/* Remove top padding and margin from first child so that top of rendered text is aligned to top of text editor text */
+
+		#rendered-md > h1:first-child,
+		#rendered-md > h2:first-child,
+		#rendered-md > h3:first-child,
+		#rendered-md > h4:first-child,
+		#rendered-md > ul:first-child,
+		#rendered-md > ol:first-child,
+		#rendered-md > table:first-child,
+		#rendered-md > blockquote:first-child,
+		#rendered-md > img:first-child,
+		#rendered-md > p:first-child {
+			margin-top: 0;
+			padding-top: 0;
+		}
+		
+		p, h1, h2, h3, h4, h5, h6, ul, table {
+			margin-top: .6em;
+			margin-bottom: 1.35em;
+
+			/*
+				Adds support for RTL text in the note body. It automatically detects the direction using the content.
+				Issue: https://github.com/laurent22/joplin/issues/3991
+			*/
+			unicode-bidi: plaintext;
+		}
+
+		h1, h2, h3, h4, h5, h6, ul, table {
+			margin-bottom: 0.65em;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			line-height: 1.5em;
+		}
+		h1 {
+			font-size: 1.5em;
+			font-weight: bold;
+			border-bottom: 1px solid #dddddd;
+			padding-bottom: .3em;
+		}
+		h2 {
+			font-size: 1.3em;
+			font-weight: bold;
+			padding-bottom: .1em; */
+		}
+		h3 {
+			font-size: 1.1em;
+			font-weight: bold;
+		}
+		h4, h5, h6 {
+			font-size: 1em;
+			font-weight: bold;
+		}
+
+		.exported-note-title {
+			font-size: 2em;
+			font-weight: bold;
+			margin-bottom: 0.8em;
+			line-height: 1.5em;
+			padding-bottom: .35em;
+			border-bottom: 1px solid #dddddd;
+		}
+
+		a {
+			color: #155BDA;
+		}
+		ul, ol {
+			padding-left: 0;
+			margin-left: 1.7em;
+		}
+		li {
+			margin-bottom: .4em;
+		}
+		li p {
+			margin-top: 0.2em;
+			margin-bottom: 0;
+		}
+
+		.resource-icon {
+			display: inline-block;
+			position: relative;
+			top: 0.3em;
+			text-decoration: none;
+			width: 1.2em;
+			height: 1.4em;
+			margin-right: 0.4em;
+			background-color:  #155BDA;
+		}
+    /* These icons are obtained from the wonderful ForkAwesome project by copying the src svgs 
+     * into the css classes below.
+     * svgs are obtained from https://github.com/ForkAwesome/Fork-Awesome/tree/master/src/icons/svg
+     * instead of the svg width, height property you must use a viewbox here, 0 0 1536 1792 is typically the actual size of the icon
+     * each line begins with the pre-amble -webkit-mask: url("data:image/svg+xml;utf8,
+     * and of course finishes with ");
+     * to precvent artifacts it is also necessary to include -webkit-mask-repeat: no-repeat;
+     * on the following line
+     * */
+		.fa-joplin {
+			/* Awesome Font file */
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M373.834 128C168.227 128 0 296.223 0 501.834v788.336C0 1495.778 168.227 1664 373.834 1664h788.336c205.608 0 373.83-168.222 373.83-373.83V501.834C1536 296.224 1367.778 128 1162.17 128zm397.222 205.431h417.424a7.132 7.132 0 0 1 7.132 7.133v132.552c0 4.461-3.619 8.073-8.077 8.073h-57.23c-24.168 0-43.768 19.338-44.284 43.374v2.377h-.017v136.191h-.053l-.466 509.375c-5.02 77.667-39.222 149.056-96.324 201.046-60.28 54.834-141.948 85.017-229.962 85.017-12.45 0-25.208-.61-37.907-1.785-92.157-8.682-181.494-48.601-251.662-112.438-71.99-65.517-117.147-150.03-127.164-238-11.226-98.763 23.42-192.783 95.045-257.937 81.99-74.637 198.185-101.768 316.613-75.704 5.574 1.227 9.55 6.282 9.55 11.997v199.52c-.199 2.625-1.481 6.599-8.183 2.896-.663-.365-1.194-.511-1.653-.531-21.987-10.587-45.159-17.57-68.559-19.916-.38-.04-.757-.124-1.138-.163-.537-.048-1.034-.033-1.556-.075-4.13-.354-8.183-.517-12.203-.58-.87-.011-1.771-.127-2.641-.127-.486 0-.951.05-1.437.057-1.464.011-2.886.115-4.33.163-2.76.102-5.497.211-8.182.448-.273.024-.547.07-.835.097-25.509 2.4-47.864 11.104-65.012 25.47-.954.802-1.974 1.53-2.9 2.36a1.34 1.34 0 0 1-.168.146c-23.96 21.8-34.881 53.872-30.726 90.316 4.62 40.737 26.94 81.156 62.841 113.823 35.908 32.67 80.335 52.977 125.113 57.186 35.118 3.36 66.547-3.919 89.899-20.461a97.255 97.255 0 0 0 9.365-7.501c2.925-2.661 5.569-5.5 8.086-8.416.3-.348.672-.673.975-1.024 8.253-9.864 14.222-21.067 17.996-33.148.639-2.034 1.051-4.148 1.564-6.227.381-1.563.81-3.106 1.112-4.693.555-2.784.923-5.632 1.253-8.49.086-.709.183-1.414.237-2.128.492-4.893.693-9.858.55-14.91h.013V521.623c-2.01-22.626-20.78-40.434-43.928-40.434h-57.23a8.071 8.071 0 0 1-8.077-8.073V340.564a7.132 7.132 0 0 1 7.136-7.133z'/></svg>");
+		}
+		.fa-file-image {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zm-128-448v320H256v-192l192-192 128 128 384-384zm-832-192c-106 0-192-86-192-192s86-192 192-192 192 86 192 192-86 192-192 192z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-pdf {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zm-514-593c25 20 53 38 84 56 42-5 81-7 117-7 67 0 152 8 177 49 7 10 13 28 2 52-1 1-2 3-3 4v1c-3 18-18 38-71 38-64 0-161-29-245-73-139 15-285 46-392 83-103 176-182 262-242 262-10 0-19-2-28-7l-24-12c-3-1-4-3-6-5-5-5-9-16-6-36 10-46 64-123 188-188 8-5 18-2 23 6 1 1 2 3 2 4 31-51 67-116 107-197 45-90 80-178 104-262-32-109-42-221-24-287 7-25 22-40 42-40h22c15 0 27 5 35 15 12 14 15 36 9 68-1 3-2 6-4 8 1 3 1 5 1 8v30c-1 63-2 123-14 192 35 105 87 190 146 238zm-576 411c30-14 73-57 137-158-75 58-122 124-137 158zm398-920c-10 28-10 76-2 132 3-16 5-31 7-44 2-17 5-31 7-43 1-3 2-5 4-8-1-1-1-3-2-5-1-18-7-29-13-36 0 2-1 3-1 4zm-124 661c88-35 186-63 284-81-10-8-20-15-29-23-49-43-93-103-127-176-19 61-47 126-83 197-15 28-30 56-45 83zm646-16c-5-5-31-24-140-24 49 18 94 28 124 28 9 0 14 0 18-1 0-1-1-2-2-3z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-word {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zM233 768v107h70l164 661h159l128-485c5-15 8-30 10-46 1-8 2-16 2-24h4l3 24c3 14 4 30 9 46l128 485h159l164-661h70V768h-300v107h90l-99 438c-4 16-6 33-7 46l-2 21h-4c0-6-2-14-3-21-3-13-5-30-9-46L825 768H711l-144 545c-4 16-5 33-8 46l-4 21h-4l-2-21c-1-13-3-30-7-46l-99-438h90V768H233z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-powerpoint {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zm-992-234v106h327v-106h-93v-167h137c43 0 82-2 118-15 90-31 146-124 146-233s-54-193-137-228c-38-15-84-19-130-19H416v107h92v555h-92zm353-280H650V882h120c35 0 62 6 83 18 36 21 56 62 56 115 0 56-20 99-62 120-21 10-47 15-78 15z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-excel {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zm-979-234v106h281v-106h-75l103-161c12-19 18-34 21-34h2c1 4 3 7 5 10 4 8 10 14 17 24l107 161h-76v106h291v-106h-68l-192-273 195-282h67V768H828v107h74l-103 159c-12 19-21 34-21 33h-2c-1-4-3-7-5-10-4-7-9-14-17-23L648 875h76V768H434v107h68l189 272-194 283h-68z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-audio {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zM620 850c12 5 20 17 20 30v544c0 13-8 25-20 30-4 1-8 2-12 2-8 0-16-3-23-9l-166-167H288c-18 0-32-14-32-32v-192c0-18 14-32 32-32h131l166-167c10-9 23-12 35-7zm417 689c19 0 37-8 50-24 83-102 129-231 129-363s-46-261-129-363c-22-28-63-32-90-10-28 23-32 63-9 91 65 80 100 178 100 282s-35 202-100 282c-23 28-19 68 9 90 12 10 26 15 40 15zm-211-148c17 0 34-7 47-20 56-60 87-137 87-219s-31-159-87-219c-24-26-65-27-91-3-25 24-27 65-2 91 33 36 52 82 52 131s-19 95-52 131c-25 26-23 67 2 91 13 11 29 17 44 17z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-video {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zM768 768c70 0 128 58 128 128v384c0 70-58 128-128 128H384c-70 0-128-58-128-128V896c0-70 58-128 128-128h384zm492 2c12 5 20 17 20 30v576c0 13-8 25-20 30-4 1-8 2-12 2-8 0-17-3-23-9l-265-266v-90l265-266c6-6 15-9 23-9 4 0 8 1 12 2z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-archive {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M640 384V256H512v128h128zm128 128V384H640v128h128zM640 640V512H512v128h128zm128 128V640H640v128h128zm700-388c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H768v128H640V128H128v1536h1280zM781 943c85 287 107 349 107 349 5 17 8 34 8 52 0 111-108 192-256 192s-256-81-256-192c0-18 3-35 8-52 0 0 21-62 120-396V768h128v128h79c29 0 54 19 62 47zm-141 465c71 0 128-29 128-64s-57-64-128-64-128 29-128 64 57 64 128 64z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-code {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zM480 768c11-14 31-17 45-6l51 38c14 11 17 31 6 45l-182 243 182 243c11 14 8 34-6 45l-51 38c-14 11-34 8-45-6l-226-301c-8-11-8-27 0-38zm802 301c8 11 8 27 0 38l-226 301c-11 14-31 17-45 6l-51-38c-14-11-17-31-6-45l182-243-182-243c-11-14-8-34 6-45l51-38c14-11 34-8 45 6zm-620 461c-18-3-29-20-26-37l138-831c3-18 20-29 37-26l63 10c18 3 29 20 26 37l-138 831c-3 18-20 29-37 26z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file-alt, .fa-file-csv {
+      /* fork-awesome doesn't have csv so we use the text icon */
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280zM384 800c0-18 14-32 32-32h704c18 0 32 14 32 32v64c0 18-14 32-32 32H416c-18 0-32-14-32-32v-64zm736 224c18 0 32 14 32 32v64c0 18-14 32-32 32H416c-18 0-32-14-32-32v-64c0-18 14-32 32-32h704zm0 256c18 0 32 14 32 32v64c0 18-14 32-32 32H416c-18 0-32-14-32-32v-64c0-18 14-32 32-32h704z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		.fa-file {
+			-webkit-mask: url("data:image/svg+xml;utf8,<svg viewBox='0 0 1536 1792' xmlns='http://www.w3.org/2000/svg'><path d='M1468 380c37 37 68 111 68 164v1152c0 53-43 96-96 96H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h896c53 0 127 31 164 68zm-444-244v376h376c-6-17-15-34-22-41l-313-313c-7-7-24-16-41-22zm384 1528V640H992c-53 0-96-43-96-96V128H128v1536h1280z'/></svg>");
+      -webkit-mask-repeat: no-repeat;
+		}
+		blockquote {
+			border-left: 4px solid rgb(220, 220, 220);
+			padding-left: 1.2em;
+			margin-left: 0;
+			opacity: 0.7;
+		}
+
+		.jop-tinymce table,
+		table {
+			text-align: left;
+			border-collapse: collapse;
+			border: 1px solid rgb(220, 220, 220);
+			background-color: #ffffff;
+		}
+
+		.jop-tinymce table td, .jop-tinymce table th,
+		table td, th {
+			text-align: left;
+			padding: .5em 1em .5em 1em;
+			font-size: 15;
+			color: #32373F;
+			font-family: 'Avenir', 'Arial', sans-serif;
+		}
+
+		.jop-tinymce table td,
+		table td {
+			border: 1px solid rgb(220, 220, 220);
+		}
+
+		.jop-tinymce table th,
+		table th {
+			border: 1px solid rgb(220, 220, 220);
+			border-bottom: 2px solid rgb(220, 220, 220);
+			background-color: rgb(247, 247, 247);
+		}
+
+		.jop-tinymce table tr:nth-child(even),
+		table tr:nth-child(even) {
+			background-color: rgb(247, 247, 247);
+		}
+
+		.jop-tinymce table tr:hover,
+		table tr:hover {
+			background-color: #e5e5e5;
+		}
+
+		hr {
+			border: none;
+			border-bottom: 2px solid #dddddd;
+		}
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		.inline-code,
+		.mce-content-body code {
+			border: 1px solid rgb(220, 220, 220);
+			background-color: rgb(243, 243, 243);
+			padding-right: .2em;
+			padding-left: .2em;
+			border-radius: .25em;
+			color: rgb(0,0,0);
+			font-size: .9em;
+		}
+
+		.highlighted-keyword {
+			background-color: #F3B717;
+			color: black;
+		}
+
+		.not-loaded-resource img {
+			width: 1.15em;
+			height: 1.15em;
+			background: white;
+			padding: 2px !important;
+			border-radius: 2px;
+			box-shadow: 0 1px 3px #000000aa;
+		}
+
+		a.not-loaded-resource img {
+			margin-right: .2em;
+		}
+
+		a.not-loaded-resource {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		}
+
+		.md-checkbox input[type=checkbox]:checked {
+			opacity: 0.7;
+		}
+
+		.jop-tinymce ul.joplin-checklist .checked,
+		.md-checkbox .checkbox-label-checked {
+			opacity: 0.5;
+		}
+
+		.exported-note {
+			padding: 1em;
+		}
+
+		.joplin-editable .joplin-source {
+			display: none;
+		}
+
+		mark {
+			background: #F7D26E;
+			color: black;
+		}
+
+		/* =============================================== */
+		/* For TinyMCE */
+		/* =============================================== */
+
+		.mce-content-body {
+			/* Note: we give a bit more padding at the bottom, to allow scrolling past the end of the document */
+			padding: 5px 10px 10em 0;
+		}
+
+		/*
+		.mce-content-body code {
+			background-color: transparent;
+		}
+		*/
+
+		.mce-content-body [data-mce-selected=inline-boundary] {
+			background-color: transparent;
+		}
+
+		.mce-content-body .joplin-editable {
+			cursor: pointer !important;
+		}
+
+		.mce-content-body.mce-content-readonly {
+			opacity: 0.5;
+		}
+
+		/* We need that to make sure click events have the A has a target */
+		.katex a span {
+			pointer-events: none;
+		}
+
+		.media-player {
+			width: 100%;
+			margin-top: 10px;
+		}
+
+		.media-player.media-pdf {
+			min-height: 100vh;
+		}
+
+		/* Clear the CODE style if the element is within a joplin-editable block */
+		.mce-content-body .joplin-editable code {
+			border: none;
+			background: none;
+			padding: 0;
+			color: inherit;
+			font-size: inherit;
+		}
+
+		/* To make code blocks horizontally scrollable */
+		/* https://github.com/laurent22/joplin/issues/5740 */
+		pre.hljs {
+			overflow-x: auto;
+		}
+
+		/* =============================================== */
+		/* For TinyMCE */
+		/* =============================================== */
+
+		@media print {
+			body {
+				height: auto !important;
+			}
+
+			pre {
+				white-space: pre-wrap;
+			}
+
+			.code, .inline-code {
+				border: 1px solid #CBCBCB;
+			}
+
+			#joplin-container-content {
+				/* The height of the content is set dynamically by JavaScript (in updateBodyHeight) to go
+				   around various issues related to scrolling. However when printing we don't want this
+				   fixed size as that would crop the content. So we set it to auto here. "important" is
+				   needed to override the style set by JavaScript at the element-level. */
+				height: auto !important;
+			}
+		}
+	
+
+				/*
+					FOR THE MARKDOWN EDITOR
+				*/
+
+				/* Remove the indentation from the checkboxes at the root of the document
+				   (otherwise they are too far right), but keep it for their children to allow
+				   nested lists. Make sure this value matches the UL margin. */
+
+				li.md-checkbox {
+					list-style-type: none;
+				}
+
+				li.md-checkbox input[type=checkbox] {
+					margin-left: -1.71em;
+					margin-right: 0.7em;
+				}
+				
+				ul.joplin-checklist {
+					list-style:none;
+				}
+
+				/*
+					FOR THE RICH TEXT EDITOR
+				*/
+
+				ul.joplin-checklist li::before {
+					content:"\f14a";
+					font-family:"Font Awesome 5 Free";
+					background-size: 16px 16px;
+					pointer-events: all;
+					cursor: pointer;
+					width: 1em;
+					height: 1em;
+					margin-left: -1.3em;
+					position: absolute;
+					color: #32373F;
+				}
+
+				.joplin-checklist li:not(.checked)::before {
+					content:"\f0c8";
+				}
+.mermaid { background-color: white; width: 640px; }</style><div id="rendered-md"><h1 id="useful-sql-commands">Useful SQL commands</h1>
+<h2 id="fwc-round-winner">FWC Round winner</h2>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">SELECT * FROM fwc_seasons_rounds WHERE start_date &gt;= '2020-12-30' AND end_date &lt; NOW();
+
+SELECT CONCAT(br.first_name,' ',br.last_name) AS NAME, br.number, 
+ CASE WHEN t2.score IS NULL THEN 0 ELSE t2.score END AS score, 
+ CASE WHEN t2.topContributor IS NULL THEN 'Not Raced Yet' ELSE t2.topContributor END AS topContributor, 
+ CASE WHEN t2.profilePicture IS NULL THEN '' ELSE t2.profilePicture END AS profilePicture 
+ FROM bikes_riders AS br
+ LEFT JOIN (SELECT 
+ t.bikeId, 
+     MAX(t.globalScore) AS score, 
+     CASE WHEN uf.facebook_first_name IS NULL THEN (CASE WHEN u.first_name &lt;&gt;'' THEN CONCAT(u.first_name,' ',u.last_name) ELSE CONCAT('Guest',u.id) END) ELSE CONCAT(uf.facebook_first_name,' ',uf.facebook_last_name) END AS topContributor, 
+     CASE WHEN uf.facebook_id IS NULL THEN '' ELSE CONCAT('https://graph.facebook.com/',uf.facebook_id,'/picture?type=normal') END AS profilePicture 
+     FROM (SELECT ub.userId, gs.userBikeId,ub.bikeId,b.name,gs.globalScore
+           FROM fwc_global_scores AS gs
+           JOIN users_bikes_v16 AS ub ON ub.id=gs.userBikeId
+           JOIN bikes AS b ON b.id=ub.bikeId
+           AND gs.createdAt &gt; '2021-01-25 00:00:00'
+           AND gs.createdAt &lt;= '2021-02-07 23:59:59'
+     ORDER BY globalScore DESC 
+     LIMIT 20000) AS t
+     JOIN users AS u ON u.id=t.userId
+     LEFT JOIN users_facebook AS uf ON uf.user_id=u.id
+     LEFT OUTER JOIN cheaters AS c ON c.userId=t.userId
+     WHERE c.userId IS NULL
+     GROUP BY t.bikeId) AS t2 ON t2.bikeId=br.id ORDER BY score DESC;
+     
+SELECT * FROM users_facebook WHERE facebook_id=281329498987516;     
+SELECT * FROM cheaters_probable WHERE userId=18842324; 
+SELECT * FROM iap_logs WHERE user_id=18842324; 
+SELECT * FROM users_bikes_v16 WHERE userId=18842324;
+SELECT * FROM fwc_global_scores LIMIT 1;WHERE userId=18842324;
+
+SELECT ub.userId, gs.userBikeId,ub.bikeId,b.name,gs.globalScore
+           FROM fwc_global_scores AS gs
+           JOIN users_bikes_v16 AS ub ON ub.id=gs.userBikeId
+           JOIN bikes AS b ON b.id=ub.bikeId
+           AND gs.createdAt &gt; '2019-06-03 00:00:00'
+           AND gs.createdAt &lt;= '2019-06-16 23:59:59'
+     ORDER BY globalScore DESC 
+     LIMIT 200;
+     
+SELECT * FROM `users_currency_event_log`    WHERE userId= 18842324 AND currencyId=2; </pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> fwc_seasons_rounds <span class="hljs-keyword">WHERE</span> start_date <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2020-12-30&#x27;</span> <span class="hljs-keyword">AND</span> end_date <span class="hljs-operator">&lt;</span> NOW();
+
+<span class="hljs-keyword">SELECT</span> CONCAT(br.first_name,<span class="hljs-string">&#x27; &#x27;</span>,br.last_name) <span class="hljs-keyword">AS</span> NAME, br.number, 
+ <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t2.score <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-number">0</span> <span class="hljs-keyword">ELSE</span> t2.score <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> score, 
+ <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t2.topContributor <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Not Raced Yet&#x27;</span> <span class="hljs-keyword">ELSE</span> t2.topContributor <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> topContributor, 
+ <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t2.profilePicture <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">ELSE</span> t2.profilePicture <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> profilePicture 
+ <span class="hljs-keyword">FROM</span> bikes_riders <span class="hljs-keyword">AS</span> br
+ <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> (<span class="hljs-keyword">SELECT</span> 
+ t.bikeId, 
+     <span class="hljs-built_in">MAX</span>(t.globalScore) <span class="hljs-keyword">AS</span> score, 
+     <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> uf.facebook_first_name <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> (<span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> u.first_name <span class="hljs-operator">&lt;&gt;</span><span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">THEN</span> CONCAT(u.first_name,<span class="hljs-string">&#x27; &#x27;</span>,u.last_name) <span class="hljs-keyword">ELSE</span> CONCAT(<span class="hljs-string">&#x27;Guest&#x27;</span>,u.id) <span class="hljs-keyword">END</span>) <span class="hljs-keyword">ELSE</span> CONCAT(uf.facebook_first_name,<span class="hljs-string">&#x27; &#x27;</span>,uf.facebook_last_name) <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> topContributor, 
+     <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> uf.facebook_id <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">ELSE</span> CONCAT(<span class="hljs-string">&#x27;https://graph.facebook.com/&#x27;</span>,uf.facebook_id,<span class="hljs-string">&#x27;/picture?type=normal&#x27;</span>) <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> profilePicture 
+     <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> ub.userId, gs.userBikeId,ub.bikeId,b.name,gs.globalScore
+           <span class="hljs-keyword">FROM</span> fwc_global_scores <span class="hljs-keyword">AS</span> gs
+           <span class="hljs-keyword">JOIN</span> users_bikes_v16 <span class="hljs-keyword">AS</span> ub <span class="hljs-keyword">ON</span> ub.id<span class="hljs-operator">=</span>gs.userBikeId
+           <span class="hljs-keyword">JOIN</span> bikes <span class="hljs-keyword">AS</span> b <span class="hljs-keyword">ON</span> b.id<span class="hljs-operator">=</span>ub.bikeId
+           <span class="hljs-keyword">AND</span> gs.createdAt <span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;2021-01-25 00:00:00&#x27;</span>
+           <span class="hljs-keyword">AND</span> gs.createdAt <span class="hljs-operator">&lt;=</span> <span class="hljs-string">&#x27;2021-02-07 23:59:59&#x27;</span>
+     <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> globalScore <span class="hljs-keyword">DESC</span> 
+     LIMIT <span class="hljs-number">20000</span>) <span class="hljs-keyword">AS</span> t
+     <span class="hljs-keyword">JOIN</span> users <span class="hljs-keyword">AS</span> u <span class="hljs-keyword">ON</span> u.id<span class="hljs-operator">=</span>t.userId
+     <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> users_facebook <span class="hljs-keyword">AS</span> uf <span class="hljs-keyword">ON</span> uf.user_id<span class="hljs-operator">=</span>u.id
+     <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> cheaters <span class="hljs-keyword">AS</span> c <span class="hljs-keyword">ON</span> c.userId<span class="hljs-operator">=</span>t.userId
+     <span class="hljs-keyword">WHERE</span> c.userId <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+     <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> t.bikeId) <span class="hljs-keyword">AS</span> t2 <span class="hljs-keyword">ON</span> t2.bikeId<span class="hljs-operator">=</span>br.id <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> score <span class="hljs-keyword">DESC</span>;
+     
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users_facebook <span class="hljs-keyword">WHERE</span> facebook_id<span class="hljs-operator">=</span><span class="hljs-number">281329498987516</span>;     
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> cheaters_probable <span class="hljs-keyword">WHERE</span> userId<span class="hljs-operator">=</span><span class="hljs-number">18842324</span>; 
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> iap_logs <span class="hljs-keyword">WHERE</span> user_id<span class="hljs-operator">=</span><span class="hljs-number">18842324</span>; 
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users_bikes_v16 <span class="hljs-keyword">WHERE</span> userId<span class="hljs-operator">=</span><span class="hljs-number">18842324</span>;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> fwc_global_scores LIMIT <span class="hljs-number">1</span>;<span class="hljs-keyword">WHERE</span> userId<span class="hljs-operator">=</span><span class="hljs-number">18842324</span>;
+
+<span class="hljs-keyword">SELECT</span> ub.userId, gs.userBikeId,ub.bikeId,b.name,gs.globalScore
+           <span class="hljs-keyword">FROM</span> fwc_global_scores <span class="hljs-keyword">AS</span> gs
+           <span class="hljs-keyword">JOIN</span> users_bikes_v16 <span class="hljs-keyword">AS</span> ub <span class="hljs-keyword">ON</span> ub.id<span class="hljs-operator">=</span>gs.userBikeId
+           <span class="hljs-keyword">JOIN</span> bikes <span class="hljs-keyword">AS</span> b <span class="hljs-keyword">ON</span> b.id<span class="hljs-operator">=</span>ub.bikeId
+           <span class="hljs-keyword">AND</span> gs.createdAt <span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;2019-06-03 00:00:00&#x27;</span>
+           <span class="hljs-keyword">AND</span> gs.createdAt <span class="hljs-operator">&lt;=</span> <span class="hljs-string">&#x27;2019-06-16 23:59:59&#x27;</span>
+     <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> globalScore <span class="hljs-keyword">DESC</span> 
+     LIMIT <span class="hljs-number">200</span>;
+     
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> `users_currency_event_log`    <span class="hljs-keyword">WHERE</span> userId<span class="hljs-operator">=</span> <span class="hljs-number">18842324</span> <span class="hljs-keyword">AND</span> currencyId<span class="hljs-operator">=</span><span class="hljs-number">2</span>; </code></pre></div>
+<h2 id="season-winner">Season Winner</h2>
+<p>Same as round winner except dates are full year</p>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">SELECT * FROM fwc_seasons;</pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> fwc_seasons;</code></pre></div>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">SELECT CONCAT(br.first_name,' ',br.last_name) AS NAME, br.number, 
+ CASE WHEN t2.score IS NULL THEN 0 ELSE t2.score END AS score, 
+ CASE WHEN t2.topContributor IS NULL THEN 'Not Raced Yet' ELSE t2.topContributor END AS topContributor, 
+ CASE WHEN t2.profilePicture IS NULL THEN '' ELSE t2.profilePicture END AS profilePicture 
+ FROM bikes_riders AS br
+ LEFT JOIN (SELECT 
+ t.bikeId, 
+     MAX(t.globalScore) AS score, 
+     CASE WHEN uf.facebook_first_name IS NULL THEN (CASE WHEN u.first_name &lt;&gt;'' THEN CONCAT(u.first_name,' ',u.last_name) ELSE CONCAT('Guest',u.id) END) ELSE CONCAT(uf.facebook_first_name,' ',uf.facebook_last_name) END AS topContributor, 
+     CASE WHEN uf.facebook_id IS NULL THEN '' ELSE CONCAT('https://graph.facebook.com/',uf.facebook_id,'/picture?type=normal') END AS profilePicture 
+     FROM (SELECT ub.userId, gs.userBikeId,ub.bikeId,b.name,gs.globalScore
+           FROM fwc_global_scores AS gs
+           JOIN users_bikes_v16 AS ub ON ub.id=gs.userBikeId
+           JOIN bikes AS b ON b.id=ub.bikeId
+           AND gs.createdAt &gt; '2018-12-31 00:00:00'
+           AND gs.createdAt &lt;= '2019-12-29 23:59:59'
+     ORDER BY globalScore DESC 
+     LIMIT 20000) AS t
+     JOIN users AS u ON u.id=t.userId
+     LEFT JOIN users_facebook AS uf ON uf.user_id=u.id
+     LEFT OUTER JOIN cheaters AS c ON c.userId=t.userId
+     WHERE c.userId IS NULL
+     GROUP BY t.bikeId) AS t2 ON t2.bikeId=br.id ORDER BY score DESC;</pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> CONCAT(br.first_name,<span class="hljs-string">&#x27; &#x27;</span>,br.last_name) <span class="hljs-keyword">AS</span> NAME, br.number, 
+ <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t2.score <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-number">0</span> <span class="hljs-keyword">ELSE</span> t2.score <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> score, 
+ <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t2.topContributor <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Not Raced Yet&#x27;</span> <span class="hljs-keyword">ELSE</span> t2.topContributor <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> topContributor, 
+ <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t2.profilePicture <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">ELSE</span> t2.profilePicture <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> profilePicture 
+ <span class="hljs-keyword">FROM</span> bikes_riders <span class="hljs-keyword">AS</span> br
+ <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> (<span class="hljs-keyword">SELECT</span> 
+ t.bikeId, 
+     <span class="hljs-built_in">MAX</span>(t.globalScore) <span class="hljs-keyword">AS</span> score, 
+     <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> uf.facebook_first_name <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> (<span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> u.first_name <span class="hljs-operator">&lt;&gt;</span><span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">THEN</span> CONCAT(u.first_name,<span class="hljs-string">&#x27; &#x27;</span>,u.last_name) <span class="hljs-keyword">ELSE</span> CONCAT(<span class="hljs-string">&#x27;Guest&#x27;</span>,u.id) <span class="hljs-keyword">END</span>) <span class="hljs-keyword">ELSE</span> CONCAT(uf.facebook_first_name,<span class="hljs-string">&#x27; &#x27;</span>,uf.facebook_last_name) <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> topContributor, 
+     <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> uf.facebook_id <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;&#x27;</span> <span class="hljs-keyword">ELSE</span> CONCAT(<span class="hljs-string">&#x27;https://graph.facebook.com/&#x27;</span>,uf.facebook_id,<span class="hljs-string">&#x27;/picture?type=normal&#x27;</span>) <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> profilePicture 
+     <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> ub.userId, gs.userBikeId,ub.bikeId,b.name,gs.globalScore
+           <span class="hljs-keyword">FROM</span> fwc_global_scores <span class="hljs-keyword">AS</span> gs
+           <span class="hljs-keyword">JOIN</span> users_bikes_v16 <span class="hljs-keyword">AS</span> ub <span class="hljs-keyword">ON</span> ub.id<span class="hljs-operator">=</span>gs.userBikeId
+           <span class="hljs-keyword">JOIN</span> bikes <span class="hljs-keyword">AS</span> b <span class="hljs-keyword">ON</span> b.id<span class="hljs-operator">=</span>ub.bikeId
+           <span class="hljs-keyword">AND</span> gs.createdAt <span class="hljs-operator">&gt;</span> <span class="hljs-string">&#x27;2018-12-31 00:00:00&#x27;</span>
+           <span class="hljs-keyword">AND</span> gs.createdAt <span class="hljs-operator">&lt;=</span> <span class="hljs-string">&#x27;2019-12-29 23:59:59&#x27;</span>
+     <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> globalScore <span class="hljs-keyword">DESC</span> 
+     LIMIT <span class="hljs-number">20000</span>) <span class="hljs-keyword">AS</span> t
+     <span class="hljs-keyword">JOIN</span> users <span class="hljs-keyword">AS</span> u <span class="hljs-keyword">ON</span> u.id<span class="hljs-operator">=</span>t.userId
+     <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">JOIN</span> users_facebook <span class="hljs-keyword">AS</span> uf <span class="hljs-keyword">ON</span> uf.user_id<span class="hljs-operator">=</span>u.id
+     <span class="hljs-keyword">LEFT</span> <span class="hljs-keyword">OUTER</span> <span class="hljs-keyword">JOIN</span> cheaters <span class="hljs-keyword">AS</span> c <span class="hljs-keyword">ON</span> c.userId<span class="hljs-operator">=</span>t.userId
+     <span class="hljs-keyword">WHERE</span> c.userId <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>
+     <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> t.bikeId) <span class="hljs-keyword">AS</span> t2 <span class="hljs-keyword">ON</span> t2.bikeId<span class="hljs-operator">=</span>br.id <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> score <span class="hljs-keyword">DESC</span>;</code></pre></div>
+<h2 id="check-player">Check Player</h2>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="" data-joplin-source-open="```&#10;" data-joplin-source-close="&#10;```">SELECT * FROM users_facebook WHERE facebook_first_name='Joan' AND facebook_last_name='Joan' AND facebook_id='118105052320911';;user_id=1927911720;
+SELECT * FROM iap_logs WHERE user_id=34819781;
+SELECT * FROM cheaters WHERE userId=34819781;
+SELECT * FROM users_currencies WHERE user_id=34819781;
+SELECT * FROM users_currency_event_log WHERE userId=34819781;
+SELECT * FROM users_permanent_records WHERE userId=34819781;
+SELECT * FROM users_bikes_v16 WHERE userId=34819781;
+SELECT * FROM fwc_circuit_scores WHERE userBikeId=30463787;
+
+SELECT t.*, a.updatedAt 
+ FROM (SELECT id, circuitId, MAX(bestCircuitScore) 
+       FROM fwc_circuit_scores 
+       WHERE createdAt &gt; '2018-12-31 00:00:00' 
+       AND userBikeId=30463787 
+       GROUP BY circuitId
+       ) AS t
+ JOIN fwc_circuit_scores AS a 
+ ON a.id = t.id;
+SELECT * FROM fwc_circuit_scores LIMIT 1;</pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users_facebook <span class="hljs-keyword">WHERE</span> facebook_first_name=<span class="hljs-string">&#x27;Joan&#x27;</span> <span class="hljs-keyword">AND</span> facebook_last_name=<span class="hljs-string">&#x27;Joan&#x27;</span> <span class="hljs-keyword">AND</span> facebook_id=<span class="hljs-string">&#x27;118105052320911&#x27;</span>;;user_id=1927911720;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> iap_logs <span class="hljs-keyword">WHERE</span> user_id=<span class="hljs-number">34819781</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> cheaters <span class="hljs-keyword">WHERE</span> userId=<span class="hljs-number">34819781</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users_currencies <span class="hljs-keyword">WHERE</span> user_id=<span class="hljs-number">34819781</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users_currency_event_log <span class="hljs-keyword">WHERE</span> userId=<span class="hljs-number">34819781</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users_permanent_records <span class="hljs-keyword">WHERE</span> userId=<span class="hljs-number">34819781</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> users_bikes_v16 <span class="hljs-keyword">WHERE</span> userId=<span class="hljs-number">34819781</span>;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> fwc_circuit_scores <span class="hljs-keyword">WHERE</span> userBikeId=<span class="hljs-number">30463787</span>;
+
+<span class="hljs-keyword">SELECT</span> t.*, a.updatedAt 
+ <span class="hljs-keyword">FROM</span> (<span class="hljs-keyword">SELECT</span> id, circuitId, <span class="hljs-built_in">MAX</span>(bestCircuitScore) 
+       <span class="hljs-keyword">FROM</span> fwc_circuit_scores 
+       <span class="hljs-keyword">WHERE</span> createdAt &gt; <span class="hljs-string">&#x27;2018-12-31 00:00:00&#x27;</span> 
+       <span class="hljs-keyword">AND</span> userBikeId=<span class="hljs-number">30463787</span> 
+       <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> circuitId
+       ) <span class="hljs-keyword">AS</span> t
+ <span class="hljs-keyword">JOIN</span> fwc_circuit_scores <span class="hljs-keyword">AS</span> a 
+ <span class="hljs-keyword">ON</span> a.id = t.id;
+<span class="hljs-keyword">SELECT</span> * <span class="hljs-keyword">FROM</span> fwc_circuit_scores <span class="hljs-keyword">LIMIT</span> <span class="hljs-number">1</span>;</code></pre></div>
+<h2 id="iap-revenue">IAP revenue</h2>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">/*iap revenue */
+SELECT DATE(l.timestamp), SUM(p.cents)/100 FROM iap_logs AS l 
+  JOIN iap_prices AS p ON p.product_id=l.product_id 
+  WHERE l.success=2 
+  GROUP BY DATE(l.timestamp) DESC;
+</pre><pre class="hljs"><code><span class="hljs-comment">/*iap revenue */</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-type">DATE</span>(l.timestamp), <span class="hljs-built_in">SUM</span>(p.cents)<span class="hljs-operator">/</span><span class="hljs-number">100</span> <span class="hljs-keyword">FROM</span> iap_logs <span class="hljs-keyword">AS</span> l 
+  <span class="hljs-keyword">JOIN</span> iap_prices <span class="hljs-keyword">AS</span> p <span class="hljs-keyword">ON</span> p.product_id<span class="hljs-operator">=</span>l.product_id 
+  <span class="hljs-keyword">WHERE</span> l.success<span class="hljs-operator">=</span><span class="hljs-number">2</span> 
+  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">DATE</span>(l.timestamp) <span class="hljs-keyword">DESC</span>;
+</code></pre></div>
+<h2 id="make-liveops-award">Make liveops award</h2>
+<h3 id="make-diamonds-award">make diamonds award</h3>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">SELECT * FROM users_currencies WHERE user_id=45814497;
+UPDATE users_currencies SET amount=amount+0 WHERE user_id=45814497 AND currency_id=2;
+INSERT INTO users_currency_event_log SET userId=45814497, currencyId=2, eventId=20, amount=200, preTransactionAmount=120,postTransactionAmount=320;</pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users_currencies <span class="hljs-keyword">WHERE</span> user_id<span class="hljs-operator">=</span><span class="hljs-number">45814497</span>;
+<span class="hljs-keyword">UPDATE</span> users_currencies <span class="hljs-keyword">SET</span> amount<span class="hljs-operator">=</span>amount<span class="hljs-operator">+</span><span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> user_id<span class="hljs-operator">=</span><span class="hljs-number">45814497</span> <span class="hljs-keyword">AND</span> currency_id<span class="hljs-operator">=</span><span class="hljs-number">2</span>;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> users_currency_event_log <span class="hljs-keyword">SET</span> userId<span class="hljs-operator">=</span><span class="hljs-number">45814497</span>, currencyId<span class="hljs-operator">=</span><span class="hljs-number">2</span>, eventId<span class="hljs-operator">=</span><span class="hljs-number">20</span>, amount<span class="hljs-operator">=</span><span class="hljs-number">200</span>, preTransactionAmount<span class="hljs-operator">=</span><span class="hljs-number">120</span>,postTransactionAmount<span class="hljs-operator">=</span><span class="hljs-number">320</span>;</code></pre></div>
+<h3 id="make-coins-award">make coins award</h3>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">SELECT * FROM users_currencies WHERE user_id=45814497;
+UPDATE users_currencies SET amount=amount+0 WHERE user_id=45814497 AND currency_id=1;
+INSERT INTO users_currency_event_log SET userId=45814497, currencyId=1, eventId=20, amount=200, preTransactionAmount=120,postTransactionAmount=320;</pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> users_currencies <span class="hljs-keyword">WHERE</span> user_id<span class="hljs-operator">=</span><span class="hljs-number">45814497</span>;
+<span class="hljs-keyword">UPDATE</span> users_currencies <span class="hljs-keyword">SET</span> amount<span class="hljs-operator">=</span>amount<span class="hljs-operator">+</span><span class="hljs-number">0</span> <span class="hljs-keyword">WHERE</span> user_id<span class="hljs-operator">=</span><span class="hljs-number">45814497</span> <span class="hljs-keyword">AND</span> currency_id<span class="hljs-operator">=</span><span class="hljs-number">1</span>;
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> users_currency_event_log <span class="hljs-keyword">SET</span> userId<span class="hljs-operator">=</span><span class="hljs-number">45814497</span>, currencyId<span class="hljs-operator">=</span><span class="hljs-number">1</span>, eventId<span class="hljs-operator">=</span><span class="hljs-number">20</span>, amount<span class="hljs-operator">=</span><span class="hljs-number">200</span>, preTransactionAmount<span class="hljs-operator">=</span><span class="hljs-number">120</span>,postTransactionAmount<span class="hljs-operator">=</span><span class="hljs-number">320</span>;</code></pre></div>
+<h2 id="update-bikes_riders-with-new-names">Update bikes_riders with new names</h2>
+<p>get the correct names etc. from <a data-from-md title='https://docs.google.com/spreadsheets/d/1JSdhZVxPjCn8USXJu_WzOL4-jZ07-U80Tz7RxIks9EM/edit#gid=842053487' href='https://docs.google.com/spreadsheets/d/1JSdhZVxPjCn8USXJu_WzOL4-jZ07-U80Tz7RxIks9EM/edit#gid=842053487'>https://docs.google.com/spreadsheets/d/1JSdhZVxPjCn8USXJu_WzOL4-jZ07-U80Tz7RxIks9EM/edit#gid=842053487</a></p>
+<p>edit them in excel and notepad to get this table</p>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">SELECT * FROM bikes_riders;</pre><pre class="hljs"><code><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> bikes_riders;</code></pre></div>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">UPDATE bikes_riders SET first_name='Andrea', last_name='Dovizioso', image_url='04_DOVIZIOSO_RIDER', number=4 WHERE id=1;
+UPDATE bikes_riders SET first_name='Hafizh', last_name='Syahrin', image_url='55_SYAHRIN_RIDER', number=55 WHERE id=2;
+UPDATE bikes_riders SET first_name='Miguel', last_name='Oliveira', image_url='88_OLIVEIRA_RIDER', number=88 WHERE id=3;
+UPDATE bikes_riders SET first_name='Danilo', last_name='Petrucci', image_url='09_PETRUCCI_RIDER', number=9 WHERE id=4;
+UPDATE bikes_riders SET first_name='Johann', last_name='Zarco', image_url='05_ZARCO_RIDER', number=5 WHERE id=5;
+UPDATE bikes_riders SET first_name='Álex', last_name='Rins', image_url='42_RINS_RIDER', number=42 WHERE id=6;
+UPDATE bikes_riders SET first_name='Joan', last_name='Mir', image_url='36_MIR_RIDER', number=36 WHERE id=7;
+UPDATE bikes_riders SET first_name='Maverick', last_name='Viñales', image_url='12_VINALES_RIDER', number=12 WHERE id=8;
+UPDATE bikes_riders SET first_name='Francesco', last_name='Bagnaia', image_url='63_BAGNAIA_RIDER', number=63 WHERE id=9;
+UPDATE bikes_riders SET first_name='Andrea', last_name='Iannone', image_url='29_IANNONE_RIDER', number=29 WHERE id=10;
+UPDATE bikes_riders SET first_name='Cal', last_name='Crutchlow', image_url='35_CRUTCHLOW_RIDER', number=35 WHERE id=11;
+UPDATE bikes_riders SET first_name='Bradley', last_name='Smith', image_url='38_SMITH_RIDER', number=38 WHERE id=12;
+UPDATE bikes_riders SET first_name='Aleix', last_name='Espargaró', image_url='41_ESPARGARO_RIDER', number=41 WHERE id=13;
+UPDATE bikes_riders SET first_name='Jack', last_name='Miller', image_url='43_MILLER_RIDER', number=43 WHERE id=14;
+UPDATE bikes_riders SET first_name='Pol', last_name='Espargaró', image_url='44_ESPARGARO_RIDER', number=44 WHERE id=15;
+UPDATE bikes_riders SET first_name='Valentino', last_name='Rossi', image_url='46_ROSSI_RIDER', number=46 WHERE id=17;
+UPDATE bikes_riders SET first_name='Takaaki', last_name='Nakagami', image_url='30_NAKAGAMI_RIDER', number=30 WHERE id=18;
+UPDATE bikes_riders SET first_name='Tito', last_name='Rabat', image_url='53_RABAT_RIDER', number=53 WHERE id=19;
+UPDATE bikes_riders SET first_name='Karel', last_name='Abraham', image_url='17_ABRAHAM_RIDER', number=17 WHERE id=20;
+UPDATE bikes_riders SET first_name='Franco', last_name='Morbidelli', image_url='21_MORBIDELLI_RIDER', number=21 WHERE id=21;
+UPDATE bikes_riders SET first_name='Fabio', last_name='Quartararo', image_url='20_QUARTARARO_RIDER', number=20 WHERE id=22;
+UPDATE bikes_riders SET first_name='Marc', last_name='Márquez', image_url='93_MARQUEZ_RIDER', number=93 WHERE id=23;
+UPDATE bikes_riders SET first_name='Jorge', last_name='Lorenzo', image_url='99_LORENZO_RIDER', number=99 WHERE id=24;</pre><pre class="hljs"><code><span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Andrea&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Dovizioso&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;04_DOVIZIOSO_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">4</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">1</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Hafizh&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Syahrin&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;55_SYAHRIN_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">55</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">2</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Miguel&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Oliveira&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;88_OLIVEIRA_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">88</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">3</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Danilo&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Petrucci&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;09_PETRUCCI_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">9</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">4</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Johann&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Zarco&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;05_ZARCO_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">5</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">5</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Álex&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Rins&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;42_RINS_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">42</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">6</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Joan&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Mir&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;36_MIR_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">36</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">7</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Maverick&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Viñales&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;12_VINALES_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">12</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">8</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Francesco&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Bagnaia&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;63_BAGNAIA_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">63</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Andrea&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Iannone&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;29_IANNONE_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">29</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">10</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Cal&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Crutchlow&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;35_CRUTCHLOW_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">35</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">11</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Bradley&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Smith&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;38_SMITH_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">38</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">12</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Aleix&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Espargaró&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;41_ESPARGARO_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">41</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">13</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Jack&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Miller&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;43_MILLER_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">43</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">14</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Pol&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Espargaró&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;44_ESPARGARO_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">44</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">15</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Valentino&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Rossi&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;46_ROSSI_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">46</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">17</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Takaaki&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Nakagami&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;30_NAKAGAMI_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">30</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">18</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Tito&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Rabat&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;53_RABAT_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">53</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">19</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Karel&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Abraham&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;17_ABRAHAM_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">17</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">20</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Franco&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Morbidelli&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;21_MORBIDELLI_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">21</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">21</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Fabio&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Quartararo&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;20_QUARTARARO_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">20</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">22</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Marc&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Márquez&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;93_MARQUEZ_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">93</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">23</span>;
+<span class="hljs-keyword">UPDATE</span> bikes_riders <span class="hljs-keyword">SET</span> first_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Jorge&#x27;</span>, last_name<span class="hljs-operator">=</span><span class="hljs-string">&#x27;Lorenzo&#x27;</span>, image_url<span class="hljs-operator">=</span><span class="hljs-string">&#x27;99_LORENZO_RIDER&#x27;</span>, number<span class="hljs-operator">=</span><span class="hljs-number">99</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">24</span>;</code></pre></div>
+<h2 id="mariaqueries_tournamentssetup">MariaQueries_TournamentsSetup</h2>
+<div class="joplin-editable"><pre class="joplin-source" data-joplin-language="sql" data-joplin-source-open="```sql&#10;" data-joplin-source-close="&#10;```">/* MariaQueries_TournamentsActivity */
+
+/* construct query to delete all tournament_leaderboard_% tables */
+#SELECT CONCAT( 'DROP TABLE ', GROUP_CONCAT(table_name) , ';' ) 
+#    AS statement FROM information_schema.tables 
+#    WHERE table_name LIKE 'tournament_leaderboard_%';
+/* run this before executing resulting DROP_TABLE query */
+#SET SESSION group_concat_max_len = 1000000;
+    
+/* following not working, trying to duplicate a row */
+#insert into tournament_definitions(id,`name`,startTimestamp,endTimestamp,timeOffsetHours,restartFrequency,duration,lastEntryInMinutes,isActivated,countryWhiteList,countryBlackList,bikeRestriction,bikeProvided,isBikeUpgradesAllowed,isCompulsivesAllowed,winningCondition,scoreDisplay,lapLimit,circuitRestriction,playerStartingPosition,opponentsLimit,playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,entryCost,entryCurrency,isEntryFeeOnlyOnce,prizeClass1ID,prizeClass1Desc,prizeClass1URL,prizeClass1Number,prizeClass1Rank,prizeClass2ID,prizeClass2Desc,prizeClass2URL,prizeClass2Number,prizeClass2Rank,prizeClass3ID,prizeClass3Desc,prizeClass3URL,prizeClass3Number,prizeClass3Rank,sponsorName,sponsorSlogan,filterable,rulesModification,helpshiftLinkDisplay,createdAt,sortOrder)
+#    select 9998,'foo',startTimestamp,endTimestamp,timeOffsetHours,restartFrequency,duration,lastEntryInMinutes,isActivated,countryWhiteList,countryBlackList,bikeRestriction,bikeProvided,isBikeUpgradesAllowed,isCompulsivesAllowed,winningCondition,scoreDisplay,lapLimit,circuitRestriction,playerStartingPosition,opponentsLimit,playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,entryCost,entryCurrency,isEntryFeeOnlyOnce,prizeClass1ID,prizeClass1Desc,prizeClass1URL,prizeClass1Number,prizeClass1Rank,prizeClass2ID,prizeClass2Desc,prizeClass2URL,prizeClass2Number,prizeClass2Rank,prizeClass3ID,prizeClass3Desc,prizeClass3URL,prizeClass3Number,prizeClass3Rank,sponsorName,sponsorSlogan,filterable,rulesModification,helpshiftLinkDisplay,createdAt,sortOrder
+#    where id=350;
+
+/* TO SET UP A NEW TOURNAMENT USE FOLLOWING STEPS */
+/* insert new tournament (with id 9999) */
+INSERT INTO tournament_definitions (id,`name`,startTimestamp,endTimestamp,timeOffsetHours,restartFrequency,duration,lastEntryInMinutes,isActivated,countryWhiteList,countryBlackList,bikeRestriction,bikeProvided,isBikeUpgradesAllowed,isCompulsivesAllowed,winningCondition,scoreDisplay,lapLimit,circuitRestriction,playerStartingPosition,opponentsLimit,playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,entryCost,entryCurrency,isEntryFeeOnlyOnce,prizeClass1ID,prizeClass1Desc,prizeClass1URL,prizeClass1Number,prizeClass1Rank,prizeClass2ID,prizeClass2Desc,prizeClass2URL,prizeClass2Number,prizeClass2Rank,prizeClass3ID,prizeClass3Desc,prizeClass3URL,prizeClass3Number,prizeClass3Rank,sponsorName,sponsorSlogan,filterable,rulesModification,helpshiftLinkDisplay,createdAt,sortOrder,minIAP,worstDivision,bestDivision)
+VALUES(9999,'***NAME***','2017-05-27 12:00:00','2030-01-01 00:00:00',0,6,6,15,0,'ALL','','***Open***',0,1,'ALL',2,1,0,'RANDOM',0,-1,0,0,0,0,1,1,50000,1,0,2,'','',2000,3,2,'','',600,10,2,'','',150,20,'','',0,'NONE','','0000-00-00 00:00:00',305,0,10,1);
+
+/* check parameters */
+SELECT * FROM tournament_definitions WHERE id=9999;
+
+/*
+#update basic
+#----------------------------------------------
+# tn_floome        FLOOME CUP
+# tn_nolan         NOLAN X-LITE SHOWDOWN
+# tn_motogpstore   MOTOGP STORE SERIES
+# tn_brembo        BREMBO SHOOTOUT
+# tn_motogpshirt   MOTOGP OPEN
+# tn_bt            BT SPORT CHALLENGE
+# tn_tissot        TISSOT CHAMPIONSHIP
+#----------------------------------------------
+# twt              WIN A TEAM BIKE
+# twp              WIN A PRO RIDER
+# twd              WIN DIAMONDS
+# twc              WIN COINS
+#----------------------------------------------
+# twc_rookie       WIN COINS: ROOKIE CLASS
+# twc_team         WIN COINS: TEAM CLASS
+# twc_pro          WIN COINS: PRO CLASS
+# twd_rookie       WIN DIAMONDS: ROOKIE CLASS
+# twd_team         WIN DIAMONDS: TEAM CLASS
+# twd_pro          WIN DIAMONDS: PRO CLASS
+#----------------------------------------------
+# twt_movistar     WIN A MOVISTAR TEAM BIKE
+# twt_monster      WIN A MONSTER TEAM BIKE
+# twt_repsol       WIN A REPSOL TEAM BIKE
+# twt_lcr          WIN A LCR TEAM BIKE
+# twt_estrella     WIN A MARC VDS TEAM BIKE
+# twt_ducati       WIN A DUCATI TEAM BIKE
+# twt_octo         WIN A PRAMAC TEAM BIKE
+# twt_aspar        WIN AN ASPAR TEAM BIKE
+# twt_avintia      WIN AN AVINTIA TEAM BIKE
+# twt_ecstar       WIN AN ECSTAR TEAM BIKE
+# twt_gresini      WIN AN APRILIA TEAM BIKE
+#----------------------------------------------
+# twp_ros          Win ROSSI
+# twp_lor          Win LORENZO
+# twp_smi          Win SMITH
+# twp_esp          Win ESPARGARÃ“ P.
+# twp_mar          Win MÃRQUEZ
+# twp_ped          Win PEDROSA
+# twp_cru          Win CRUTCHLOW
+# twp_mil          Win MILLER
+# twp_rab          Win RABAT
+# twp_dov          Win DOVIZIOSO
+# twp_ian          Win IANNONE
+# twp_pet          Win PETRUCCI
+# twp_red          Win REDDING
+# twp_lav          Win LAVERTY
+# twp_her          Win HERNANDEZ
+# twp_bar          Win BARBERÃ
+# twp_baz          Win BAZ
+# twp_vin          Win VIÃ‘ALES
+# twp_esa          Win ESPARGARÃ“ A.
+# twp_bra          Win BRADL
+# twp_bau          Win BAUTISTA
+#----------------------------------------------
+# twdr_as1         WIN DIAMONDS: ROOKIE CLASS
+# twdt_as1         WIN DIAMONDS: TEAM CLASS
+# twdp_as1         WIN DIAMONDS: PRO CLASS
+# twdr_hs1         WIN DIAMONDS: ROOKIE CLASS
+# twdt_hs1         WIN DIAMONDS: TEAM CLASS
+# twdp_hs1         WIN DIAMONDS: PRO CLASS
+#----------------------------------------------
+# trds_a           ROOKIE DIAMOND SERIES
+# trds_b           ROOKIE DIAMOND SERIES B
+# trds_c           ROOKIE DIAMOND SERIES C
+# ttdp_a           TEAM DIAMOND PRIX
+# ttdp_b           TEAM DIAMOND PRIX B
+# ttdp_c           TEAM DIAMOND PRIX C
+# tpds_a           PRO DIAMOND SHOWDOWN
+# tpds_b           PRO DIAMOND SHOWDOWN B
+# tpds_c           PRO DIAMOND SHOWDOWN C
+#----------------------------------------------
+# trtss_hsa        ROOKIE TOP SCORE SHOOTOUT
+# trtss_hsb        ROOKIE TOP SCORE SHOOTOUT B
+# trtss_hsc        ROOKIE TOP SCORE SHOOTOUT C
+# tttst_hsa        TEAM TOP SCORE TROPHY
+# tttst_hsb        TEAM TOP SCORE TROPHY B
+# tttst_hsc        TEAM TOP SCORE TROPHY C
+# tprsm_hsa        PRO TOP SCORE MASTERS
+# tprsm_hsb        PRO TOP SCORE MASTERS B
+# tprsm_hsc        PRO TOP SCORE MASTERS C
+#----------------------------------------------
+# twc_rookieb      WIN COINS B: ROOKIE CLASS
+# twc_rookiec      WIN COINS C: ROOKIE CLASS
+# twc_teamb        WIN COINS B: TEAM CLASS
+# twc_teamc        WIN COINS C: TEAM CLASS
+# twc_prob         WIN COINS B: PRO CLASS
+# twc_proc         WIN COINS C: PRO CLASS
+# twd_rookieb      WIN DIAMONDS B: ROOKIE CLASS
+# twd_rookiec      WIN DIAMONDS C: ROOKIE CLASS
+# twd_teamb        WIN DIAMONDS B: TEAM CLASS
+# twd_teamc        WIN DIAMONDS C: TEAM CLASS
+# twd_prob         WIN DIAMONDS B: PRO CLASS
+# twd_proc         WIN DIAMONDS C: PRO CLASS
+#----------------------------------------------
+# tst_a            SPECIAL TOURNAMENT
+# tst_b            SPECIAL TOURNAMENT B
+# tst_c            SPECIAL TOURNAMENT C
+#----------------------------------------------
+# tmo_a            MOTOGP OPEN
+# tmo_b            MOTOGP OPEN B
+# tmo_c            MOTOGP OPEN C
+# twmf_a           WEPLAY MOTO FESTIVAL
+# twmf_b           WEPLAY MOTO FESTIVAL B
+# twmf_c           WEPLAY MOTO FESTIVAL C
+# tsl_a            SPEED LEAGUE
+# tsl_b            SPEED LEAGUE B
+# tsl_c            SPEED LEAGUE C
+# tmc_a            MOTO CHAMPIONS
+# tmc_b            MOTO CHAMPIONS B
+# tmc_c            MOTO CHAMPIONS C
+# twcc_a           WEPLAY CASUAL CUP
+# twcc_b           WEPLAY CASUAL CUP B
+# twcc_c           WEPLAY CASUAL CUP C
+#----------------------------------------------
+# bikeRestriction  &quot;None&quot;, &quot;Open&quot;, &quot;Team&quot;, &quot;Pro Team&quot;, &quot;Provided&quot; 
+#  or a pipe-delimited set of bike table numbers unfortunately actual rider numbers are not used, 
+#  must specify 17 for rossi etc. look in bikes table only these certain bikes can be selected in garage
+# winningCondition 1=HighScore, 2=AccumulatedScore, 3=, 4=
+# entryCost MULTIPLY BY 100!
+# entryCurrency 1=coins 2=diamonds
+# isEntryFeeOnlyOnce 1 or 0
+*/
+/* basic updates of 9999 tournament (set whatever you need)*/
+UPDATE tournament_definitions 
+  SET `name`='*other tissot'
+  ,bikeRestriction='None'
+  ,winningCondition=1  
+  ,entryCost=1500  
+  ,entryCurrency=2 
+  ,isEntryFeeOnlyOnce=0
+  ,helpshiftLinkDisplay=107
+  ,countryWhiteList='**'
+WHERE id=9999;
+
+/* show(check) basic state of 9999 tournament */
+SELECT td.id,td.name,td.bikeRestriction,td.winningCondition,td.entryCost/100,c.name AS Currency,isEntryFeeOnlyOnce FROM tournament_definitions AS td JOIN currencies AS c ON td.entryCurrency=c.id WHERE td.id=9999;
+
+/* update */
+UPDATE tournament_definitions 
+  SET playerMaxLevel=
+  ,playerMinLevel=
+WHERE id=9999;
+
+/* update */
+UPDATE tournament_definitions 
+  SET bikeMaxLevel=
+  ,bikeMinLevel=
+WHERE id=9999;
+
+/* update */
+UPDATE tournament_definitions 
+  SET playerMaxRace=
+  ,playerMinRace=
+WHERE id=9999;
+
+/* update */
+UPDATE tournament_definitions 
+  SET worstDivision=
+  ,bestDivision=
+WHERE id=9999;
+
+/* update */
+UPDATE tournament_definitions 
+  SET minIAP=
+WHERE id=9999;
+
+/* show(check) levels state of 9999 tournament */
+SELECT id, playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,worstDivision,bestDivision,minIAP FROM tournament_definitions WHERE id=9999;
+
+/* update prizeClass 
+#prizeClassID      0=noPrize 1=coins 2=diamonds 3=BikeID, 4=physicalPrize
+#prizeClassDesc    MasterStringTable id for class1 prize description
+#prizeClassURL     if prizeClassID==4(physicalPrize) the client side filename for prize image
+#prizeClassNumber  if prize_class1_id==coins or diamonds then the quantity of them if BikeID then id of the bike won
+#prizeClassRank    must achieve this rank or better to win this prize
+*/
+UPDATE tournament_definitions 
+  SET prizeClass1ID=4
+  ,prizeClass1Desc='*other tissot prize'
+  ,prizeClass1URL='product_tissot'
+  ,prizeClass1Number=0
+  ,prizeClass1Rank=1
+  
+  ,prizeClass2ID=1
+  ,prizeClass2Number=50000
+  ,prizeClass2Rank=3
+  
+  ,prizeClass3ID=1
+  ,prizeClass3Number=20000
+  ,prizeClass3Rank=10
+WHERE id=9999;
+
+/* show(check) prize class state of 9999 tournament */
+SELECT prizeClass1ID AS 1st,prizeClass1Desc AS prizeDesc,prizeClass1URL AS image,prizeClass1Number AS num,prizeClass1Rank AS rank,prizeClass2ID AS 2nd,prizeClass2Number AS num,prizeClass2Rank AS rank,prizeClass3ID AS 3rd,prizeClass3Number AS num,prizeClass3Rank AS rank FROM tournament_definitions WHERE id=9999;
+
+/* show(check) (more descriptive) prize class state of 9999 tournament */
+SELECT t.id,t.name,p1.prizeType AS 1st,t.prizeClass1Number AS num,t.prizeClass1Desc AS prizeDesc,t.prizeClass1URL AS image,t.prizeClass1Rank AS rank,
+       p2.prizeType AS 2nd,t.prizeClass2Number AS num,t.prizeClass2Rank AS rank,
+       p3.prizeType AS 3rd,t.prizeClass3Number AS num,t.prizeClass3Rank AS rank 
+  FROM tournament_definitions AS t 
+  JOIN prize_types AS p1 ON p1.id=t.prizeClass1ID
+  JOIN prize_types AS p2 ON p2.id=t.prizeClass2ID
+  JOIN prize_types AS p3 ON p3.id=t.prizeClass3ID
+  WHERE t.id=9999;
+  
+/* show(check)bike prize check with bike name */
+SELECT t.id,p1.prizeType AS 1st,
+       CASE WHEN t.prizeClass1ID=3 THEN b.image_url ELSE t.prizeClass1Number END AS num,
+       t.prizeClass1Desc AS prizeDesc,t.prizeClass1URL AS image,t.prizeClass1Rank AS rank,
+       p2.prizeType AS 2nd,t.prizeClass2Number AS num,t.prizeClass2Rank AS rank,
+       p3.prizeType AS 3rd,t.prizeClass3Number AS num,t.prizeClass3Rank AS rank 
+  FROM tournament_definitions AS t 
+  JOIN prize_types AS p1 ON p1.id=t.prizeClass1ID
+  JOIN prize_types AS p2 ON p2.id=t.prizeClass2ID
+  JOIN prize_types AS p3 ON p3.id=t.prizeClass3ID
+  JOIN bikes AS b ON t.prizeClass1Number = b.id;
+  WHERE t.id=9999;
+  
+/* update sponsor */
+UPDATE tournament_definitions 
+  SET sponsorName=''
+  ,sponsorSlogan=''
+WHERE id=9999;
+
+/* final setup dates, restart frequency etc. (set whatever you want)
+#   0   &lt; id &lt;  50   BT
+#  50   &lt; id &lt; 100   Win Coins
+# 100   &lt; id &lt; 150   Win Diamonds
+# 150   &lt; id &lt; 200   Win Team Bike
+# 200   &lt; id &lt; 250   Win Pro
+# 250   &lt; id &lt; 300   High Score Series
+# 300   &lt; id &lt; 350   Accumulated Score Series
+# 350   &lt; id &lt; 400   Physical Prizes
+ sortOrder &lt; 100
+*/
+;DELETE FROM `tournament_combatants` WHERE tournamentId=362;
+UPDATE tournament_definitions 
+  SET id=370
+  ,startTimestamp='2017-05-26 07:00:00'
+  ,endTimestamp='2030-06-05 00:00:00'
+  ,restartFrequency=168
+  ,duration=168
+  ,sortOrder=12
+WHERE id=9999;
+
+/* show(check) levels state of 9999 tournament */
+SELECT id,startTimestamp,endTimestamp,restartFrequency,duration,isActivated,sortOrder FROM tournament_definitions WHERE id=9999;
+
+/* start tournament */
+UPDATE tournament_definitions SET isActivated=1 WHERE id=362;
+
+</pre><pre class="hljs"><code><span class="hljs-comment">/* MariaQueries_TournamentsActivity */</span>
+
+<span class="hljs-comment">/* construct query to delete all tournament_leaderboard_% tables */</span>
+#<span class="hljs-keyword">SELECT</span> CONCAT( <span class="hljs-string">&#x27;DROP TABLE &#x27;</span>, GROUP_CONCAT(table_name) , <span class="hljs-string">&#x27;;&#x27;</span> ) 
+#    <span class="hljs-keyword">AS</span> statement <span class="hljs-keyword">FROM</span> information_schema.tables 
+#    <span class="hljs-keyword">WHERE</span> table_name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;tournament_leaderboard_%&#x27;</span>;
+<span class="hljs-comment">/* run this before executing resulting DROP_TABLE query */</span>
+#<span class="hljs-keyword">SET</span> SESSION group_concat_max_len <span class="hljs-operator">=</span> <span class="hljs-number">1000000</span>;
+    
+<span class="hljs-comment">/* following not working, trying to duplicate a row */</span>
+#<span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> tournament_definitions(id,`name`,startTimestamp,endTimestamp,timeOffsetHours,restartFrequency,duration,lastEntryInMinutes,isActivated,countryWhiteList,countryBlackList,bikeRestriction,bikeProvided,isBikeUpgradesAllowed,isCompulsivesAllowed,winningCondition,scoreDisplay,lapLimit,circuitRestriction,playerStartingPosition,opponentsLimit,playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,entryCost,entryCurrency,isEntryFeeOnlyOnce,prizeClass1ID,prizeClass1Desc,prizeClass1URL,prizeClass1Number,prizeClass1Rank,prizeClass2ID,prizeClass2Desc,prizeClass2URL,prizeClass2Number,prizeClass2Rank,prizeClass3ID,prizeClass3Desc,prizeClass3URL,prizeClass3Number,prizeClass3Rank,sponsorName,sponsorSlogan,filterable,rulesModification,helpshiftLinkDisplay,createdAt,sortOrder)
+#    <span class="hljs-keyword">select</span> <span class="hljs-number">9998</span>,<span class="hljs-string">&#x27;foo&#x27;</span>,startTimestamp,endTimestamp,timeOffsetHours,restartFrequency,duration,lastEntryInMinutes,isActivated,countryWhiteList,countryBlackList,bikeRestriction,bikeProvided,isBikeUpgradesAllowed,isCompulsivesAllowed,winningCondition,scoreDisplay,lapLimit,circuitRestriction,playerStartingPosition,opponentsLimit,playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,entryCost,entryCurrency,isEntryFeeOnlyOnce,prizeClass1ID,prizeClass1Desc,prizeClass1URL,prizeClass1Number,prizeClass1Rank,prizeClass2ID,prizeClass2Desc,prizeClass2URL,prizeClass2Number,prizeClass2Rank,prizeClass3ID,prizeClass3Desc,prizeClass3URL,prizeClass3Number,prizeClass3Rank,sponsorName,sponsorSlogan,filterable,rulesModification,helpshiftLinkDisplay,createdAt,sortOrder
+#    <span class="hljs-keyword">where</span> id<span class="hljs-operator">=</span><span class="hljs-number">350</span>;
+
+<span class="hljs-comment">/* TO SET UP A NEW TOURNAMENT USE FOLLOWING STEPS */</span>
+<span class="hljs-comment">/* insert new tournament (with id 9999) */</span>
+<span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> tournament_definitions (id,`name`,startTimestamp,endTimestamp,timeOffsetHours,restartFrequency,duration,lastEntryInMinutes,isActivated,countryWhiteList,countryBlackList,bikeRestriction,bikeProvided,isBikeUpgradesAllowed,isCompulsivesAllowed,winningCondition,scoreDisplay,lapLimit,circuitRestriction,playerStartingPosition,opponentsLimit,playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,entryCost,entryCurrency,isEntryFeeOnlyOnce,prizeClass1ID,prizeClass1Desc,prizeClass1URL,prizeClass1Number,prizeClass1Rank,prizeClass2ID,prizeClass2Desc,prizeClass2URL,prizeClass2Number,prizeClass2Rank,prizeClass3ID,prizeClass3Desc,prizeClass3URL,prizeClass3Number,prizeClass3Rank,sponsorName,sponsorSlogan,filterable,rulesModification,helpshiftLinkDisplay,createdAt,sortOrder,minIAP,worstDivision,bestDivision)
+<span class="hljs-keyword">VALUES</span>(<span class="hljs-number">9999</span>,<span class="hljs-string">&#x27;***NAME***&#x27;</span>,<span class="hljs-string">&#x27;2017-05-27 12:00:00&#x27;</span>,<span class="hljs-string">&#x27;2030-01-01 00:00:00&#x27;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6</span>,<span class="hljs-number">6</span>,<span class="hljs-number">15</span>,<span class="hljs-number">0</span>,<span class="hljs-string">&#x27;ALL&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;***Open***&#x27;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-string">&#x27;ALL&#x27;</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-string">&#x27;RANDOM&#x27;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">50000</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-number">2000</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-number">600</span>,<span class="hljs-number">10</span>,<span class="hljs-number">2</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-number">150</span>,<span class="hljs-number">20</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-number">0</span>,<span class="hljs-string">&#x27;NONE&#x27;</span>,<span class="hljs-string">&#x27;&#x27;</span>,<span class="hljs-string">&#x27;0000-00-00 00:00:00&#x27;</span>,<span class="hljs-number">305</span>,<span class="hljs-number">0</span>,<span class="hljs-number">10</span>,<span class="hljs-number">1</span>);
+
+<span class="hljs-comment">/* check parameters */</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/*
+#update basic
+#----------------------------------------------
+# tn_floome        FLOOME CUP
+# tn_nolan         NOLAN X-LITE SHOWDOWN
+# tn_motogpstore   MOTOGP STORE SERIES
+# tn_brembo        BREMBO SHOOTOUT
+# tn_motogpshirt   MOTOGP OPEN
+# tn_bt            BT SPORT CHALLENGE
+# tn_tissot        TISSOT CHAMPIONSHIP
+#----------------------------------------------
+# twt              WIN A TEAM BIKE
+# twp              WIN A PRO RIDER
+# twd              WIN DIAMONDS
+# twc              WIN COINS
+#----------------------------------------------
+# twc_rookie       WIN COINS: ROOKIE CLASS
+# twc_team         WIN COINS: TEAM CLASS
+# twc_pro          WIN COINS: PRO CLASS
+# twd_rookie       WIN DIAMONDS: ROOKIE CLASS
+# twd_team         WIN DIAMONDS: TEAM CLASS
+# twd_pro          WIN DIAMONDS: PRO CLASS
+#----------------------------------------------
+# twt_movistar     WIN A MOVISTAR TEAM BIKE
+# twt_monster      WIN A MONSTER TEAM BIKE
+# twt_repsol       WIN A REPSOL TEAM BIKE
+# twt_lcr          WIN A LCR TEAM BIKE
+# twt_estrella     WIN A MARC VDS TEAM BIKE
+# twt_ducati       WIN A DUCATI TEAM BIKE
+# twt_octo         WIN A PRAMAC TEAM BIKE
+# twt_aspar        WIN AN ASPAR TEAM BIKE
+# twt_avintia      WIN AN AVINTIA TEAM BIKE
+# twt_ecstar       WIN AN ECSTAR TEAM BIKE
+# twt_gresini      WIN AN APRILIA TEAM BIKE
+#----------------------------------------------
+# twp_ros          Win ROSSI
+# twp_lor          Win LORENZO
+# twp_smi          Win SMITH
+# twp_esp          Win ESPARGARÃ“ P.
+# twp_mar          Win MÃRQUEZ
+# twp_ped          Win PEDROSA
+# twp_cru          Win CRUTCHLOW
+# twp_mil          Win MILLER
+# twp_rab          Win RABAT
+# twp_dov          Win DOVIZIOSO
+# twp_ian          Win IANNONE
+# twp_pet          Win PETRUCCI
+# twp_red          Win REDDING
+# twp_lav          Win LAVERTY
+# twp_her          Win HERNANDEZ
+# twp_bar          Win BARBERÃ
+# twp_baz          Win BAZ
+# twp_vin          Win VIÃ‘ALES
+# twp_esa          Win ESPARGARÃ“ A.
+# twp_bra          Win BRADL
+# twp_bau          Win BAUTISTA
+#----------------------------------------------
+# twdr_as1         WIN DIAMONDS: ROOKIE CLASS
+# twdt_as1         WIN DIAMONDS: TEAM CLASS
+# twdp_as1         WIN DIAMONDS: PRO CLASS
+# twdr_hs1         WIN DIAMONDS: ROOKIE CLASS
+# twdt_hs1         WIN DIAMONDS: TEAM CLASS
+# twdp_hs1         WIN DIAMONDS: PRO CLASS
+#----------------------------------------------
+# trds_a           ROOKIE DIAMOND SERIES
+# trds_b           ROOKIE DIAMOND SERIES B
+# trds_c           ROOKIE DIAMOND SERIES C
+# ttdp_a           TEAM DIAMOND PRIX
+# ttdp_b           TEAM DIAMOND PRIX B
+# ttdp_c           TEAM DIAMOND PRIX C
+# tpds_a           PRO DIAMOND SHOWDOWN
+# tpds_b           PRO DIAMOND SHOWDOWN B
+# tpds_c           PRO DIAMOND SHOWDOWN C
+#----------------------------------------------
+# trtss_hsa        ROOKIE TOP SCORE SHOOTOUT
+# trtss_hsb        ROOKIE TOP SCORE SHOOTOUT B
+# trtss_hsc        ROOKIE TOP SCORE SHOOTOUT C
+# tttst_hsa        TEAM TOP SCORE TROPHY
+# tttst_hsb        TEAM TOP SCORE TROPHY B
+# tttst_hsc        TEAM TOP SCORE TROPHY C
+# tprsm_hsa        PRO TOP SCORE MASTERS
+# tprsm_hsb        PRO TOP SCORE MASTERS B
+# tprsm_hsc        PRO TOP SCORE MASTERS C
+#----------------------------------------------
+# twc_rookieb      WIN COINS B: ROOKIE CLASS
+# twc_rookiec      WIN COINS C: ROOKIE CLASS
+# twc_teamb        WIN COINS B: TEAM CLASS
+# twc_teamc        WIN COINS C: TEAM CLASS
+# twc_prob         WIN COINS B: PRO CLASS
+# twc_proc         WIN COINS C: PRO CLASS
+# twd_rookieb      WIN DIAMONDS B: ROOKIE CLASS
+# twd_rookiec      WIN DIAMONDS C: ROOKIE CLASS
+# twd_teamb        WIN DIAMONDS B: TEAM CLASS
+# twd_teamc        WIN DIAMONDS C: TEAM CLASS
+# twd_prob         WIN DIAMONDS B: PRO CLASS
+# twd_proc         WIN DIAMONDS C: PRO CLASS
+#----------------------------------------------
+# tst_a            SPECIAL TOURNAMENT
+# tst_b            SPECIAL TOURNAMENT B
+# tst_c            SPECIAL TOURNAMENT C
+#----------------------------------------------
+# tmo_a            MOTOGP OPEN
+# tmo_b            MOTOGP OPEN B
+# tmo_c            MOTOGP OPEN C
+# twmf_a           WEPLAY MOTO FESTIVAL
+# twmf_b           WEPLAY MOTO FESTIVAL B
+# twmf_c           WEPLAY MOTO FESTIVAL C
+# tsl_a            SPEED LEAGUE
+# tsl_b            SPEED LEAGUE B
+# tsl_c            SPEED LEAGUE C
+# tmc_a            MOTO CHAMPIONS
+# tmc_b            MOTO CHAMPIONS B
+# tmc_c            MOTO CHAMPIONS C
+# twcc_a           WEPLAY CASUAL CUP
+# twcc_b           WEPLAY CASUAL CUP B
+# twcc_c           WEPLAY CASUAL CUP C
+#----------------------------------------------
+# bikeRestriction  &quot;None&quot;, &quot;Open&quot;, &quot;Team&quot;, &quot;Pro Team&quot;, &quot;Provided&quot; 
+#  or a pipe-delimited set of bike table numbers unfortunately actual rider numbers are not used, 
+#  must specify 17 for rossi etc. look in bikes table only these certain bikes can be selected in garage
+# winningCondition 1=HighScore, 2=AccumulatedScore, 3=, 4=
+# entryCost MULTIPLY BY 100!
+# entryCurrency 1=coins 2=diamonds
+# isEntryFeeOnlyOnce 1 or 0
+*/</span>
+<span class="hljs-comment">/* basic updates of 9999 tournament (set whatever you need)*/</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> `name`<span class="hljs-operator">=</span><span class="hljs-string">&#x27;*other tissot&#x27;</span>
+  ,bikeRestriction<span class="hljs-operator">=</span><span class="hljs-string">&#x27;None&#x27;</span>
+  ,winningCondition<span class="hljs-operator">=</span><span class="hljs-number">1</span>  
+  ,entryCost<span class="hljs-operator">=</span><span class="hljs-number">1500</span>  
+  ,entryCurrency<span class="hljs-operator">=</span><span class="hljs-number">2</span> 
+  ,isEntryFeeOnlyOnce<span class="hljs-operator">=</span><span class="hljs-number">0</span>
+  ,helpshiftLinkDisplay<span class="hljs-operator">=</span><span class="hljs-number">107</span>
+  ,countryWhiteList<span class="hljs-operator">=</span><span class="hljs-string">&#x27;**&#x27;</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* show(check) basic state of 9999 tournament */</span>
+<span class="hljs-keyword">SELECT</span> td.id,td.name,td.bikeRestriction,td.winningCondition,td.entryCost<span class="hljs-operator">/</span><span class="hljs-number">100</span>,c.name <span class="hljs-keyword">AS</span> Currency,isEntryFeeOnlyOnce <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">AS</span> td <span class="hljs-keyword">JOIN</span> currencies <span class="hljs-keyword">AS</span> c <span class="hljs-keyword">ON</span> td.entryCurrency<span class="hljs-operator">=</span>c.id <span class="hljs-keyword">WHERE</span> td.id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* update */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> playerMaxLevel<span class="hljs-operator">=</span>
+  ,playerMinLevel<span class="hljs-operator">=</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* update */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> bikeMaxLevel<span class="hljs-operator">=</span>
+  ,bikeMinLevel<span class="hljs-operator">=</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* update */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> playerMaxRace<span class="hljs-operator">=</span>
+  ,playerMinRace<span class="hljs-operator">=</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* update */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> worstDivision<span class="hljs-operator">=</span>
+  ,bestDivision<span class="hljs-operator">=</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* update */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> minIAP<span class="hljs-operator">=</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* show(check) levels state of 9999 tournament */</span>
+<span class="hljs-keyword">SELECT</span> id, playerMaxLevel,playerMinLevel,bikeMaxLevel,bikeMinLevel,playerMaxRace,playerMinRace,worstDivision,bestDivision,minIAP <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* update prizeClass 
+#prizeClassID      0=noPrize 1=coins 2=diamonds 3=BikeID, 4=physicalPrize
+#prizeClassDesc    MasterStringTable id for class1 prize description
+#prizeClassURL     if prizeClassID==4(physicalPrize) the client side filename for prize image
+#prizeClassNumber  if prize_class1_id==coins or diamonds then the quantity of them if BikeID then id of the bike won
+#prizeClassRank    must achieve this rank or better to win this prize
+*/</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> prizeClass1ID<span class="hljs-operator">=</span><span class="hljs-number">4</span>
+  ,prizeClass1Desc<span class="hljs-operator">=</span><span class="hljs-string">&#x27;*other tissot prize&#x27;</span>
+  ,prizeClass1URL<span class="hljs-operator">=</span><span class="hljs-string">&#x27;product_tissot&#x27;</span>
+  ,prizeClass1Number<span class="hljs-operator">=</span><span class="hljs-number">0</span>
+  ,prizeClass1Rank<span class="hljs-operator">=</span><span class="hljs-number">1</span>
+  
+  ,prizeClass2ID<span class="hljs-operator">=</span><span class="hljs-number">1</span>
+  ,prizeClass2Number<span class="hljs-operator">=</span><span class="hljs-number">50000</span>
+  ,prizeClass2Rank<span class="hljs-operator">=</span><span class="hljs-number">3</span>
+  
+  ,prizeClass3ID<span class="hljs-operator">=</span><span class="hljs-number">1</span>
+  ,prizeClass3Number<span class="hljs-operator">=</span><span class="hljs-number">20000</span>
+  ,prizeClass3Rank<span class="hljs-operator">=</span><span class="hljs-number">10</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* show(check) prize class state of 9999 tournament */</span>
+<span class="hljs-keyword">SELECT</span> prizeClass1ID <span class="hljs-keyword">AS</span> <span class="hljs-number">1</span>st,prizeClass1Desc <span class="hljs-keyword">AS</span> prizeDesc,prizeClass1URL <span class="hljs-keyword">AS</span> image,prizeClass1Number <span class="hljs-keyword">AS</span> num,prizeClass1Rank <span class="hljs-keyword">AS</span> rank,prizeClass2ID <span class="hljs-keyword">AS</span> <span class="hljs-number">2</span>nd,prizeClass2Number <span class="hljs-keyword">AS</span> num,prizeClass2Rank <span class="hljs-keyword">AS</span> rank,prizeClass3ID <span class="hljs-keyword">AS</span> <span class="hljs-number">3</span>rd,prizeClass3Number <span class="hljs-keyword">AS</span> num,prizeClass3Rank <span class="hljs-keyword">AS</span> rank <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* show(check) (more descriptive) prize class state of 9999 tournament */</span>
+<span class="hljs-keyword">SELECT</span> t.id,t.name,p1.prizeType <span class="hljs-keyword">AS</span> <span class="hljs-number">1</span>st,t.prizeClass1Number <span class="hljs-keyword">AS</span> num,t.prizeClass1Desc <span class="hljs-keyword">AS</span> prizeDesc,t.prizeClass1URL <span class="hljs-keyword">AS</span> image,t.prizeClass1Rank <span class="hljs-keyword">AS</span> rank,
+       p2.prizeType <span class="hljs-keyword">AS</span> <span class="hljs-number">2</span>nd,t.prizeClass2Number <span class="hljs-keyword">AS</span> num,t.prizeClass2Rank <span class="hljs-keyword">AS</span> rank,
+       p3.prizeType <span class="hljs-keyword">AS</span> <span class="hljs-number">3</span>rd,t.prizeClass3Number <span class="hljs-keyword">AS</span> num,t.prizeClass3Rank <span class="hljs-keyword">AS</span> rank 
+  <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">AS</span> t 
+  <span class="hljs-keyword">JOIN</span> prize_types <span class="hljs-keyword">AS</span> p1 <span class="hljs-keyword">ON</span> p1.id<span class="hljs-operator">=</span>t.prizeClass1ID
+  <span class="hljs-keyword">JOIN</span> prize_types <span class="hljs-keyword">AS</span> p2 <span class="hljs-keyword">ON</span> p2.id<span class="hljs-operator">=</span>t.prizeClass2ID
+  <span class="hljs-keyword">JOIN</span> prize_types <span class="hljs-keyword">AS</span> p3 <span class="hljs-keyword">ON</span> p3.id<span class="hljs-operator">=</span>t.prizeClass3ID
+  <span class="hljs-keyword">WHERE</span> t.id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+  
+<span class="hljs-comment">/* show(check)bike prize check with bike name */</span>
+<span class="hljs-keyword">SELECT</span> t.id,p1.prizeType <span class="hljs-keyword">AS</span> <span class="hljs-number">1</span>st,
+       <span class="hljs-keyword">CASE</span> <span class="hljs-keyword">WHEN</span> t.prizeClass1ID<span class="hljs-operator">=</span><span class="hljs-number">3</span> <span class="hljs-keyword">THEN</span> b.image_url <span class="hljs-keyword">ELSE</span> t.prizeClass1Number <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> num,
+       t.prizeClass1Desc <span class="hljs-keyword">AS</span> prizeDesc,t.prizeClass1URL <span class="hljs-keyword">AS</span> image,t.prizeClass1Rank <span class="hljs-keyword">AS</span> rank,
+       p2.prizeType <span class="hljs-keyword">AS</span> <span class="hljs-number">2</span>nd,t.prizeClass2Number <span class="hljs-keyword">AS</span> num,t.prizeClass2Rank <span class="hljs-keyword">AS</span> rank,
+       p3.prizeType <span class="hljs-keyword">AS</span> <span class="hljs-number">3</span>rd,t.prizeClass3Number <span class="hljs-keyword">AS</span> num,t.prizeClass3Rank <span class="hljs-keyword">AS</span> rank 
+  <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">AS</span> t 
+  <span class="hljs-keyword">JOIN</span> prize_types <span class="hljs-keyword">AS</span> p1 <span class="hljs-keyword">ON</span> p1.id<span class="hljs-operator">=</span>t.prizeClass1ID
+  <span class="hljs-keyword">JOIN</span> prize_types <span class="hljs-keyword">AS</span> p2 <span class="hljs-keyword">ON</span> p2.id<span class="hljs-operator">=</span>t.prizeClass2ID
+  <span class="hljs-keyword">JOIN</span> prize_types <span class="hljs-keyword">AS</span> p3 <span class="hljs-keyword">ON</span> p3.id<span class="hljs-operator">=</span>t.prizeClass3ID
+  <span class="hljs-keyword">JOIN</span> bikes <span class="hljs-keyword">AS</span> b <span class="hljs-keyword">ON</span> t.prizeClass1Number <span class="hljs-operator">=</span> b.id;
+  <span class="hljs-keyword">WHERE</span> t.id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+  
+<span class="hljs-comment">/* update sponsor */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> sponsorName<span class="hljs-operator">=</span><span class="hljs-string">&#x27;&#x27;</span>
+  ,sponsorSlogan<span class="hljs-operator">=</span><span class="hljs-string">&#x27;&#x27;</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* final setup dates, restart frequency etc. (set whatever you want)
+#   0   &lt; id &lt;  50   BT
+#  50   &lt; id &lt; 100   Win Coins
+# 100   &lt; id &lt; 150   Win Diamonds
+# 150   &lt; id &lt; 200   Win Team Bike
+# 200   &lt; id &lt; 250   Win Pro
+# 250   &lt; id &lt; 300   High Score Series
+# 300   &lt; id &lt; 350   Accumulated Score Series
+# 350   &lt; id &lt; 400   Physical Prizes
+ sortOrder &lt; 100
+*/</span>
+;<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> `tournament_combatants` <span class="hljs-keyword">WHERE</span> tournamentId<span class="hljs-operator">=</span><span class="hljs-number">362</span>;
+<span class="hljs-keyword">UPDATE</span> tournament_definitions 
+  <span class="hljs-keyword">SET</span> id<span class="hljs-operator">=</span><span class="hljs-number">370</span>
+  ,startTimestamp<span class="hljs-operator">=</span><span class="hljs-string">&#x27;2017-05-26 07:00:00&#x27;</span>
+  ,endTimestamp<span class="hljs-operator">=</span><span class="hljs-string">&#x27;2030-06-05 00:00:00&#x27;</span>
+  ,restartFrequency<span class="hljs-operator">=</span><span class="hljs-number">168</span>
+  ,duration<span class="hljs-operator">=</span><span class="hljs-number">168</span>
+  ,sortOrder<span class="hljs-operator">=</span><span class="hljs-number">12</span>
+<span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* show(check) levels state of 9999 tournament */</span>
+<span class="hljs-keyword">SELECT</span> id,startTimestamp,endTimestamp,restartFrequency,duration,isActivated,sortOrder <span class="hljs-keyword">FROM</span> tournament_definitions <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">9999</span>;
+
+<span class="hljs-comment">/* start tournament */</span>
+<span class="hljs-keyword">UPDATE</span> tournament_definitions <span class="hljs-keyword">SET</span> isActivated<span class="hljs-operator">=</span><span class="hljs-number">1</span> <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span><span class="hljs-number">362</span>;
+
+</code></pre></div>
+</div></div>
+					</body>
+				</html>
+			
